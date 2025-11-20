@@ -76,11 +76,12 @@ class _AudioPageState extends State<AudioPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = ColorScheme.of(context);
-    final isPortrait = MediaQuery.sizeOf(context).isPortrait;
-    final padding = MediaQuery.viewPaddingOf(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final isPortrait = context.mediaQuery.orientation == Orientation.portrait;
     return Scaffold(
       appBar: AppBar(
+        title: const Text('音频播放'),
+        centerTitle: true,
         actions: [
           Builder(
             builder: (context) {
@@ -92,9 +93,59 @@ class _AudioPageState extends State<AudioPage> {
                   _controller.onChangeOrder(value);
                   (context as Element).markNeedsBuild();
                 },
+                itemBuilder: (context) => ListOrder.values
+                    .map((e) => PopupMenuItem(value: e, child: Text(e.title)))
+                    .toList(),
+              );
+            },
+          ),
+          if (_controller.isVideo) ...[
+            TextButton.icon(
+              onPressed: () => Get.back(),
+              icon: const Icon(Icons.videocam_outlined, size: 20),
+              label: const Text('看视频'),
+            ),
+            IconButton(
+              onPressed: _showMore,
+              icon: const Icon(Icons.more_vert),
+            ),
+          ],
+          const SizedBox(width: 12),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverToBoxAdapter(
+                  child: _buildInfo(colorScheme, isPortrait),
+                ),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
+                    child: Text(
+                      '相关推荐',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ],
+                ),
+                RelatedVideoPanel(heroTag: _controller.heroTag),
+              ],
+              body: VideoReplyPanel(
+                heroTag: _controller.heroTag,
+                isNested: true,
               ),
+            ),
+          ),
+          _buildProgressBar(colorScheme),
+          _buildDuration(colorScheme),
+          _buildControls(),
+          SizedBox(height: context.mediaQueryPadding.bottom + 12),
+        ],
       ),
     );
   }
