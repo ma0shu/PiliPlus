@@ -855,20 +855,6 @@ class _AudioPageState extends State<AudioPage> {
         ),
       ],
     );
-  }
-
-  Widget _buildInfo(ColorScheme colorScheme, bool isPortrait) {
-    return Obx(() {
-      final audioItem = _controller.audioItem.value;
-      if (audioItem != null) {
-        final cover = audioItem.arc.cover.http2https;
-        return Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
                     onTap: () => PageUtils.imageView(
