@@ -9,8 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RelatedVideoPanel extends StatefulWidget {
-  const RelatedVideoPanel({super.key, required this.heroTag});
+  const RelatedVideoPanel({
+    super.key,
+    required this.heroTag,
+    this.onVideoTap,
+  });
   final String heroTag;
+  final void Function(HotVideoItemModel item)? onVideoTap;
+
   @override
   State<RelatedVideoPanel> createState() => _RelatedVideoPanelState();
 }
@@ -37,8 +43,12 @@ class _RelatedVideoPanelState extends State<RelatedVideoPanel> with GridMixin {
             ? SliverGrid.builder(
                 gridDelegate: gridDelegate,
                 itemBuilder: (context, index) {
+                  final item = response[index];
                   return VideoCardH(
-                    videoItem: response[index],
+                    videoItem: item,
+                    onTap: widget.onVideoTap != null
+                        ? () => widget.onVideoTap!(item)
+                        : null,
                     onRemove: () => _relatedController.loadingState
                       ..value.data!.removeAt(index)
                       ..refresh(),

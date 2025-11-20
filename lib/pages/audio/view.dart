@@ -133,7 +133,17 @@ class _AudioPageState extends State<AudioPage> {
                     ),
                   ),
                 ),
-                RelatedVideoPanel(heroTag: _controller.heroTag),
+                RelatedVideoPanel(
+                  heroTag: _controller.heroTag,
+                  onVideoTap: (item) {
+                    _controller.player?.pause();
+                    AudioPage.toAudioPage(
+                      oid: item.aid,
+                      itemType: 1, // 1 for video
+                      from: PlaylistSource.PLAYLIST_SOURCE_VIDEO_DETAIL,
+                    );
+                  },
+                ),
               ],
               body: VideoReplyPanel(
                 heroTag: _controller.heroTag,
