@@ -10,6 +10,8 @@ import 'package:PiliPlus/models/common/image_preview_type.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
 import 'package:PiliPlus/pages/audio/controller.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/widgets/action_item.dart';
+import 'package:PiliPlus/pages/video/related/view.dart';
+import 'package:PiliPlus/pages/video/reply/view.dart';
 import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
@@ -90,61 +92,6 @@ class _AudioPageState extends State<AudioPage> {
                   _controller.onChangeOrder(value);
                   (context as Element).markNeedsBuild();
                 },
-                itemBuilder: (context) => ListOrder.values
-                    .map((e) => PopupMenuItem(value: e, child: Text(e.title)))
-                    .toList(),
-              );
-            },
-          ),
-          if (_controller.isVideo)
-            IconButton(
-              onPressed: _showMore,
-              icon: const Icon(Icons.more_vert),
-            ),
-          const SizedBox(width: 5),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(
-          left: 20 + padding.left,
-          right: 20 + padding.right,
-          bottom: 30 + padding.bottom,
-        ),
-        child: isPortrait
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildInfo(colorScheme, isPortrait)),
-                  const SizedBox(height: 25),
-                  _buildProgressBar(colorScheme),
-                  _buildDuration(colorScheme),
-                  _buildControls(),
-                ],
-              )
-            : Row(
-                spacing: 12,
-                children: [
-                  Expanded(
-                    child: _buildInfo(colorScheme, isPortrait),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Obx(() {
-                          final audioItem = _controller.audioItem.value;
-                          if (audioItem != null) {
-                            return _buildActions(audioItem);
-                          }
-                          return const SizedBox.shrink();
-                        }),
-                        const SizedBox(height: 25),
-                        _buildProgressBar(colorScheme),
-                        _buildDuration(colorScheme),
-                        _buildControls(),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -843,113 +790,130 @@ class _AudioPageState extends State<AudioPage> {
       final audioItem = _controller.audioItem.value;
       if (audioItem != null) {
         final cover = audioItem.arc.cover.http2https;
-        return Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: ListView(
-                  key: const PageStorageKey(_AudioPageState),
-                  shrinkWrap: true,
-                  physics: const ClampingScrollPhysics(),
-                  children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: () => PageUtils.imageView(
-                          imgList: [SourceModel(url: cover)],
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => PageUtils.imageView(
+                      imgList: [SourceModel(url: cover)],
+                    ),
+                    child: Hero(
+                      tag: cover,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: NetworkImgLayer(
+                          src: cover,
+                          width: 100,
+                          height: 100,
                         ),
-                        child: Hero(
-                          tag: cover,
-                          child: NetworkImgLayer(
-                            src: cover,
-                            width: 170,
-                            height: 170,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SelectableText(
+                          audioItem.arc.title,
+                          style: const TextStyle(
+                            height: 1.4,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
+                          maxLines: 2,
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SelectableText(
-                      audioItem.arc.title,
-                      style: const TextStyle(
-                        height: 1.7,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    if (audioItem.owner.hasName()) ...[
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () {
-                          _controller.player?.pause();
-                          Get.toNamed('/member?mid=${audioItem.owner.mid}');
-                        },
-                        child: Row(
-                          spacing: 6,
-                          mainAxisSize: MainAxisSize.min,
+                        const SizedBox(height: 8),
+                        if (audioItem.owner.hasName())
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              _controller.player?.pause();
+                              Get.toNamed('/member?mid=${audioItem.owner.mid}');
+                            },
+                            child: Row(
+                              spacing: 6,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (audioItem.owner.hasAvatar())
+                                  NetworkImgLayer(
+                                    src: audioItem.owner.avatar,
+                                    width: 20,
+                                    height: 20,
+                                    type: ImageType.avatar,
+                                  ),
+                                Text(
+                                  audioItem.owner.name,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: colorScheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 6),
+                        Row(
                           children: [
-                            if (audioItem.owner.hasAvatar())
-                              NetworkImgLayer(
-                                src: audioItem.owner.avatar,
-                                width: 22,
-                                height: 22,
-                                type: ImageType.avatar,
-                              ),
+                            Icon(
+                              size: 12,
+                              Icons.headphones_outlined,
+                              color: colorScheme.outline,
+                            ),
+                            const SizedBox(width: 4),
                             Text(
-                              audioItem.owner.name,
+                              '${NumUtils.numFormat(audioItem.stat.view)}  '
+                              '${DateFormatUtils.dateFormat(audioItem.arc.publish.toInt(), long: DateFormatUtils.longFormatD)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: colorScheme.outline,
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                    Row(
-                      children: [
-                        Icon(
-                          size: 14,
-                          Icons.headphones_outlined,
-                          color: colorScheme.outline,
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                    ' ${NumUtils.numFormat(audioItem.stat.view)}   '
-                                    '${DateFormatUtils.dateFormat(audioItem.arc.publish.toInt(), long: DateFormatUtils.longFormatD)}   ',
-                              ),
-                              TextSpan(
-                                text: audioItem.arc.displayedOid,
-                                style: TextStyle(color: colorScheme.secondary),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Utils.copyText(
-                                    audioItem.arc.displayedOid,
-                                  ),
-                              ),
-                            ],
-                          ),
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: colorScheme.outline,
-                          ),
-                        ),
                       ],
                     ),
-                    if (audioItem.arc.hasDesc()) ...[
-                      const SizedBox(height: 10),
+                  ),
+                ],
+              ),
+              if (audioItem.arc.hasDesc()) ...[
+                const SizedBox(height: 12),
+                Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    tilePadding: EdgeInsets.zero,
+                    childrenPadding: EdgeInsets.zero,
+                    dense: true,
+                    title: Text(
+                      '简介',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    children: [
                       SelectableText(
                         audioItem.arc.desc,
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: colorScheme.onSurfaceVariant,
+                          height: 1.5,
+                        ),
                       ),
                     ],
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            if (isPortrait) ...[
-              const SizedBox(height: 10),
+              ],
+              const SizedBox(height: 12),
               _buildActions(audioItem),
             ],
-          ],
+          ),
         );
       }
       return const SizedBox.shrink();

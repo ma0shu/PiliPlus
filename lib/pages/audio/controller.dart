@@ -48,6 +48,7 @@ class AudioController extends GetxController
   Int64? extraId;
   late final PlaylistSource from;
   late final isVideo = itemType == 1;
+  late final String heroTag;
 
   final Rx<DetailItem?> audioItem = Rx<DetailItem?>(null);
 
@@ -98,6 +99,7 @@ class AudioController extends GetxController
     if (extraId != null) {
       this.extraId = Int64(extraId);
     }
+    heroTag = args['heroTag'] ?? Utils.makeHeroTag(oid);
     if (args['heroTag'] case String heroTag) {
       try {
         _videoDetailController = Get.find<VideoDetailController>(tag: heroTag);
