@@ -138,9 +138,9 @@ class _AudioPageState extends State<AudioPage> {
                   onVideoTap: (item) {
                     _controller.player?.pause();
                     AudioPage.toAudioPage(
-                      oid: item.aid,
+                      oid: item.aid ?? 0,
                       itemType: 1, // 1 for video
-                      from: PlaylistSource.PLAYLIST_SOURCE_VIDEO_DETAIL,
+                      from: PlaylistSource.DEFAULT,
                     );
                   },
                 ),
