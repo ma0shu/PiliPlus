@@ -25,6 +25,8 @@ import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart' hide DraggableScrollableSheet;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:PiliPlus/utils/id_utils.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 class AudioPage extends StatefulWidget {
   const AudioPage({super.key});
@@ -138,8 +140,16 @@ class _AudioPageState extends State<AudioPage> {
                   heroTag: _controller.heroTag,
                   onVideoTap: (item) {
                     _controller.player?.pause();
+                    int oid = item.aid ?? 0;
+                    if (oid == 0 && item.bvid != null) {
+                      oid = IdUtils.bv2av(item.bvid!);
+                    }
+                    if (oid == 0) {
+                      SmartDialog.showToast('无法获取视频ID');
+                      return;
+                    }
                     AudioPage.toAudioPage(
-                      oid: item.aid ?? 0,
+                      oid: oid,
                       itemType: 1, // 1 for video
                       from: PlaylistSource.DEFAULT,
                     );
