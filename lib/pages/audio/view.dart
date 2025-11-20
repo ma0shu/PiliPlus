@@ -855,129 +855,142 @@ class _AudioPageState extends State<AudioPage> {
         ),
       ],
     );
-                children: [
-                  GestureDetector(
-                    onTap: () => PageUtils.imageView(
-                      imgList: [SourceModel(url: cover)],
-                    ),
-                    child: Hero(
-                      tag: cover,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: NetworkImgLayer(
-                          src: cover,
-                          width: 100,
-                          height: 100,
-                        ),
+  Widget _buildInfo(ColorScheme colorScheme, bool isPortrait) {
+    return Obx(() {
+      final audioItem = _controller.audioItem.value;
+      if (audioItem == null) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      final cover = audioItem.arc.cover.http2https;
+      return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () => PageUtils.imageView(
+                    imgList: [SourceModel(url: cover)],
+                  ),
+                  child: Hero(
+                    tag: cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: NetworkImgLayer(
+                        src: cover,
+                        width: 100,
+                        height: 100,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SelectableText(
-                          audioItem.arc.title,
-                          style: const TextStyle(
-                            height: 1.4,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          maxLines: 2,
-                        ),
-                        const SizedBox(height: 8),
-                        if (audioItem.owner.hasName())
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              _controller.player?.pause();
-                              Get.toNamed('/member?mid=${audioItem.owner.mid}');
-                            },
-                            child: Row(
-                              spacing: 6,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (audioItem.owner.hasAvatar())
-                                  NetworkImgLayer(
-                                    src: audioItem.owner.avatar,
-                                    width: 20,
-                                    height: 20,
-                                    type: ImageType.avatar,
-                                  ),
-                                Text(
-                                  audioItem.owner.name,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: colorScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Icon(
-                              size: 12,
-                              Icons.headphones_outlined,
-                              color: colorScheme.outline,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${NumUtils.numFormat(audioItem.stat.view)}  '
-                              '${DateFormatUtils.dateFormat(audioItem.arc.publish.toInt(), long: DateFormatUtils.longFormatD)}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: colorScheme.outline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              if (audioItem.arc.hasDesc()) ...[
-                const SizedBox(height: 12),
-                Theme(
-                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    tilePadding: EdgeInsets.zero,
-                    childrenPadding: EdgeInsets.zero,
-                    dense: true,
-                    title: Text(
-                      '简介',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SelectableText(
-                        audioItem.arc.desc,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: colorScheme.onSurfaceVariant,
-                          height: 1.5,
+                        audioItem.arc.title,
+                        style: const TextStyle(
+                          height: 1.4,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 8),
+                      if (audioItem.owner.hasName())
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            _controller.player?.pause();
+                            Get.toNamed('/member?mid=${audioItem.owner.mid}');
+                          },
+                          child: Row(
+                            spacing: 6,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (audioItem.owner.hasAvatar())
+                                NetworkImgLayer(
+                                  src: audioItem.owner.avatar,
+                                  width: 20,
+                                  height: 20,
+                                  type: ImageType.avatar,
+                                ),
+                              Text(
+                                audioItem.owner.name,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Icon(
+                            size: 12,
+                            Icons.headphones_outlined,
+                            color: colorScheme.outline,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${NumUtils.numFormat(audioItem.stat.view)}  '
+                            '${DateFormatUtils.dateFormat(audioItem.arc.publish.toInt(), long: DateFormatUtils.longFormatD)}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: colorScheme.outline,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ],
+            ),
+            if (audioItem.arc.hasDesc()) ...[
               const SizedBox(height: 12),
-              _buildActions(audioItem),
+              Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  childrenPadding: EdgeInsets.zero,
+                  dense: true,
+                  title: Text(
+                    '简介',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  children: [
+                    SelectableText(
+                      audioItem.arc.desc,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
-          ),
-        );
-      }
-      return const SizedBox.shrink();
+            const SizedBox(height: 12),
+            _buildActions(audioItem),
+          ],
+        ),
+      );
     });
   }
-}
 
 extension _PlayReatExt on PlayRepeat {
   IconData get icon => switch (this) {
