@@ -12,6 +12,11 @@ class RecommendFilter {
     caseSensitive: false,
   );
   static bool enableFilter = rcmdRegExp.pattern.isNotEmpty;
+  static RegExp whiteRcmdRegExp = RegExp(
+    Pref.whiteWordForRecommend,
+    caseSensitive: false,
+  );
+  static bool enableWhiteFilter = whiteRcmdRegExp.pattern.isNotEmpty;
 
   static bool filter(BaseVideoItemModel videoItem) {
     //由于相关视频中没有已关注标签，只能视为非关注视频
@@ -32,6 +37,9 @@ class RecommendFilter {
   }
 
   static bool filterTitle(String title) {
+    if (enableWhiteFilter && whiteRcmdRegExp.hasMatch(title)) {
+      return false;
+    }
     return (enableFilter && rcmdRegExp.hasMatch(title));
   }
 
