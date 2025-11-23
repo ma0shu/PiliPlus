@@ -886,9 +886,7 @@ class VideoHttp {
           i['stat']['like'],
           i['stat']['view'],
         )) {
-      if (enableFilter &&
-          i['tname'] != null &&
-          zoneRegExp.hasMatch(i['tname'])) {
+      if (RecommendFilter.filterZone(i['tname'])) {
         return false;
       }
       return true;
