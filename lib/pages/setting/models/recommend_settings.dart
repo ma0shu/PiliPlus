@@ -2,6 +2,7 @@ import 'package:PiliPlus/http/video.dart';
 import 'package:PiliPlus/models/common/settings_type.dart';
 import 'package:PiliPlus/pages/rcmd/controller.dart';
 import 'package:PiliPlus/pages/setting/models/model.dart';
+import 'package:PiliPlus/pages/setting/widgets/partition_select_dialog.dart';
 import 'package:PiliPlus/utils/recommend_filter.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:flutter/foundation.dart';
@@ -94,6 +95,21 @@ List<SettingsModel> get recommendSettings => [
     onChanged: (value) {
       RecommendFilter.zoneWhiteRegExp = value;
       RecommendFilter.enableZoneWhiteFilter = value.pattern.isNotEmpty;
+    },
+  ),
+  SettingsModel(
+    settingsType: SettingsType.normal,
+    title: 'App推荐/热门/排行榜: 视频分区白名单 (选择)',
+    subtitle: '点击选择允许的分区',
+    leading: const Icon(Icons.checklist_rtl_outlined),
+    onTap: (setState) async {
+      var result = await showDialog<List<String>>(
+        context: Get.context!,
+        builder: (context) => const PartitionSelectDialog(),
+      );
+      if (result != null) {
+        RecommendFilter.whitePartitionIds = result.toSet();
+      }
     },
   ),
   getVideoFilterSelectModel(

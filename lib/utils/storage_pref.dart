@@ -260,6 +260,9 @@ abstract class Pref {
   static String get whiteWordForZone =>
       _setting.get(SettingBoxKey.whiteWordForZone, defaultValue: '');
 
+  static List<String> get whitePartitionIds =>
+      List<String>.from(_setting.get(SettingBoxKey.whitePartitionIds) ?? []);
+
   static bool get appRcmd =>
       _setting.get(SettingBoxKey.appRcmd, defaultValue: true);
 

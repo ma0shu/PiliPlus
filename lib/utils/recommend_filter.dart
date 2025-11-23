@@ -67,22 +67,36 @@ class RecommendFilter {
     return false;
   }
 
-  static bool filterZone(String? tname) {
+  static Set<String> whitePartitionIds = Pref.whitePartitionIds.toSet();
+
+  static bool filterZone(String? tname, {String? tid}) {
     if (tname == null) return false;
-    debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
+    // debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
     
     // 1. Whitelist Check (Strict Mode)
-    if (enableZoneWhiteFilter) {
-      if (!zoneWhiteRegExp.hasMatch(tname)) {
-        debugPrint('Whitelist MISMATCH zone: $tname');
+    // Check regex OR partition ID list
+    bool matchedWhitelist = false;
+    if (enableZoneWhiteFilter && zoneWhiteRegExp.hasMatch(tname)) {
+      matchedWhitelist = true;
+    }
+    if (!matchedWhitelist && tid != null && whitePartitionIds.contains(tid)) {
+      matchedWhitelist = true;
+    }
+
+    // If whitelist is active (either regex or IDs has content), we must match one of them
+    bool whitelistActive = enableZoneWhiteFilter || whitePartitionIds.isNotEmpty;
+
+    if (whitelistActive) {
+      if (!matchedWhitelist) {
+        // debugPrint('Whitelist MISMATCH zone: $tname (tid: $tid)');
         return true; // Filtered because it didn't match whitelist
       }
-      debugPrint('Whitelist matched zone: $tname');
+      // debugPrint('Whitelist matched zone: $tname (tid: $tid)');
     }
 
     // 2. Blacklist Check
     if (enableZoneFilter && zoneRegExp.hasMatch(tname)) {
-      debugPrint('Blacklist matched zone: $tname');
+      // debugPrint('Blacklist matched zone: $tname');
       return true;
     }
     return false;

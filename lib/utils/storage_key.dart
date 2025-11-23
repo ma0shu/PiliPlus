@@ -56,6 +56,7 @@ abstract class SettingBoxKey {
       applyFilterToRelatedVideos = 'applyFilterToRelatedVideos',
       whiteWordForRecommend = 'whiteWordForRecommend',
       whiteWordForZone = 'whiteWordForZone',
+      whitePartitionIds = 'whitePartitionIds',
       autoUpdate = 'autoUpdate',
       autoClearCache = 'autoClearCache',
       maxCacheSize = 'maxCacheSize',

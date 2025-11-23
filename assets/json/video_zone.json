@@ -1,0 +1,790 @@
+{
+  "动画": [
+    {
+      "name": "动画",
+      "code": "douga",
+      "tid": "1"
+    },
+    {
+      "name": "MAD·AMV",
+      "code": "mad",
+      "tid": "24"
+    },
+    {
+      "name": "MMD·3D",
+      "code": "mmd",
+      "tid": "25"
+    },
+    {
+      "name": "同人·手书",
+      "code": "handdrawn",
+      "tid": "47"
+    },
+    {
+      "name": "配音",
+      "code": "voice",
+      "tid": "257"
+    },
+    {
+      "name": "手办·模玩",
+      "code": "garage_kit",
+      "tid": "210"
+    },
+    {
+      "name": "特摄",
+      "code": "tokusatsu",
+      "tid": "86"
+    },
+    {
+      "name": "动漫杂谈",
+      "code": "acgntalks",
+      "tid": "253"
+    },
+    {
+      "name": "综合",
+      "code": "other",
+      "tid": "27"
+    }
+  ],
+  "番剧": [
+    {
+      "name": "番剧",
+      "code": "anime",
+      "tid": "13"
+    },
+    {
+      "name": "资讯",
+      "code": "information",
+      "tid": "51"
+    },
+    {
+      "name": "官方延伸",
+      "code": "offical",
+      "tid": "152"
+    },
+    {
+      "name": "完结动画",
+      "code": "finish",
+      "tid": "32"
+    },
+    {
+      "name": "连载动画",
+      "code": "serial",
+      "tid": "33"
+    }
+  ],
+  "国创": [
+    {
+      "name": "国创",
+      "code": "guochuang",
+      "tid": "167"
+    },
+    {
+      "name": "国产动画",
+      "code": "chinese",
+      "tid": "153"
+    },
+    {
+      "name": "国产原创相关",
+      "code": "original",
+      "tid": "168"
+    },
+    {
+      "name": "布袋戏",
+      "code": "puppetry",
+      "tid": "169"
+    },
+    {
+      "name": "资讯",
+      "code": "information",
+      "tid": "170"
+    },
+    {
+      "name": "动态漫·广播剧",
+      "code": "motioncomic",
+      "tid": "195"
+    }
+  ],
+  "音乐": [
+    {
+      "name": "音乐",
+      "code": "music",
+      "tid": "3"
+    },
+    {
+      "name": "原创音乐",
+      "code": "original",
+      "tid": "28"
+    },
+    {
+      "name": "音乐现场",
+      "code": "live",
+      "tid": "29"
+    },
+    {
+      "name": "翻唱",
+      "code": "cover",
+      "tid": "31"
+    },
+    {
+      "name": "演奏",
+      "code": "perform",
+      "tid": "59"
+    },
+    {
+      "name": "乐评盘点",
+      "code": "commentary",
+      "tid": "243"
+    },
+    {
+      "name": "VOCALOID·UTAU",
+      "code": "vocaloid",
+      "tid": "30"
+    },
+    {
+      "name": "MV",
+      "code": "mv",
+      "tid": "193"
+    },
+    {
+      "name": "音乐粉丝饭拍",
+      "code": "fan_videos",
+      "tid": "266"
+    },
+    {
+      "name": "AI音乐",
+      "code": "ai_music",
+      "tid": "265"
+    },
+    {
+      "name": "电台",
+      "code": "radio",
+      "tid": "267"
+    },
+    {
+      "name": "音乐教学",
+      "code": "tutorial",
+      "tid": "244"
+    },
+    {
+      "name": "音乐综合",
+      "code": "other",
+      "tid": "130"
+    }
+  ],
+  "舞蹈": [
+    {
+      "name": "舞蹈",
+      "code": "dance",
+      "tid": "129"
+    },
+    {
+      "name": "宅舞",
+      "code": "otaku",
+      "tid": "20"
+    },
+    {
+      "name": "街舞",
+      "code": "hiphop",
+      "tid": "198"
+    },
+    {
+      "name": "明星舞蹈",
+      "code": "star",
+      "tid": "199"
+    },
+    {
+      "name": "国风舞蹈",
+      "code": "china",
+      "tid": "200"
+    },
+    {
+      "name": "颜值·网红舞",
+      "code": "gestures",
+      "tid": "255"
+    },
+    {
+      "name": "舞蹈综合",
+      "code": "three_d",
+      "tid": "154"
+    },
+    {
+      "name": "舞蹈教程",
+      "code": "demo",
+      "tid": "156"
+    }
+  ],
+  "游戏": [
+    {
+      "name": "游戏",
+      "code": "game",
+      "tid": "4"
+    },
+    {
+      "name": "单机游戏",
+      "code": "stand_alone",
+      "tid": "17"
+    },
+    {
+      "name": "电子竞技",
+      "code": "esports",
+      "tid": "171"
+    },
+    {
+      "name": "手机游戏",
+      "code": "mobile",
+      "tid": "172"
+    },
+    {
+      "name": "网络游戏",
+      "code": "online",
+      "tid": "65"
+    },
+    {
+      "name": "桌游棋牌",
+      "code": "board",
+      "tid": "173"
+    },
+    {
+      "name": "GMV",
+      "code": "gmv",
+      "tid": "121"
+    },
+    {
+      "name": "音游",
+      "code": "music",
+      "tid": "136"
+    },
+    {
+      "name": "Mugen",
+      "code": "mugen",
+      "tid": "19"
+    }
+  ],
+  "知识": [
+    {
+      "name": "知识",
+      "code": "knowledge",
+      "tid": "36"
+    },
+    {
+      "name": "科学科普",
+      "code": "science",
+      "tid": "201"
+    },
+    {
+      "name": "社科·法律·心理",
+      "code": "social_science",
+      "tid": "124"
+    },
+    {
+      "name": "人文历史",
+      "code": "humanity_history",
+      "tid": "228"
+    },
+    {
+      "name": "财经商业",
+      "code": "business",
+      "tid": "207"
+    },
+    {
+      "name": "校园学习",
+      "code": "campus",
+      "tid": "208"
+    },
+    {
+      "name": "职业职场",
+      "code": "career",
+      "tid": "209"
+    },
+    {
+      "name": "设计·创意",
+      "code": "design",
+      "tid": "229"
+    },
+    {
+      "name": "野生技术协会",
+      "code": "skill",
+      "tid": "122"
+    }
+  ],
+  "科技": [
+    {
+      "name": "科技",
+      "code": "tech",
+      "tid": "188"
+    },
+    {
+      "name": "数码",
+      "code": "digital",
+      "tid": "95"
+    },
+    {
+      "name": "软件应用",
+      "code": "application",
+      "tid": "230"
+    },
+    {
+      "name": "计算机技术",
+      "code": "computer_tech",
+      "tid": "231"
+    },
+    {
+      "name": "科工机械",
+      "code": "industry",
+      "tid": "232"
+    },
+    {
+      "name": "极客DIY",
+      "code": "diy",
+      "tid": "233"
+    }
+  ],
+  "运动": [
+    {
+      "name": "运动",
+      "code": "sports",
+      "tid": "234"
+    },
+    {
+      "name": "篮球",
+      "code": "basketball",
+      "tid": "235"
+    },
+    {
+      "name": "足球",
+      "code": "football",
+      "tid": "249"
+    },
+    {
+      "name": "健身",
+      "code": "aerobics",
+      "tid": "164"
+    },
+    {
+      "name": "竞技体育",
+      "code": "athletic",
+      "tid": "236"
+    },
+    {
+      "name": "运动文化",
+      "code": "culture",
+      "tid": "237"
+    },
+    {
+      "name": "运动综合",
+      "code": "comprehensive",
+      "tid": "238"
+    }
+  ],
+  "汽车": [
+    {
+      "name": "汽车",
+      "code": "car",
+      "tid": "223"
+    },
+    {
+      "name": "汽车知识科普",
+      "code": "knowledge",
+      "tid": "258"
+    },
+    {
+      "name": "购车攻略",
+      "code": "strategy",
+      "tid": "227"
+    },
+    {
+      "name": "新能源车",
+      "code": "newenergyvehicle",
+      "tid": "247"
+    },
+    {
+      "name": "赛车",
+      "code": "racing",
+      "tid": "245"
+    },
+    {
+      "name": "改装玩车",
+      "code": "modifiedvehicle",
+      "tid": "246"
+    },
+    {
+      "name": "摩托车",
+      "code": "motorcycle",
+      "tid": "240"
+    },
+    {
+      "name": "房车",
+      "code": "touringcar",
+      "tid": "248"
+    },
+    {
+      "name": "汽车生活",
+      "code": "life",
+      "tid": "176"
+    }
+  ],
+  "生活": [
+    {
+      "name": "生活",
+      "code": "life",
+      "tid": "160"
+    },
+    {
+      "name": "搞笑",
+      "code": "funny",
+      "tid": "138"
+    },
+    {
+      "name": "亲子",
+      "code": "parenting",
+      "tid": "254"
+    },
+    {
+      "name": "出行",
+      "code": "travel",
+      "tid": "250"
+    },
+    {
+      "name": "三农",
+      "code": "rurallife",
+      "tid": "251"
+    },
+    {
+      "name": "家居房产",
+      "code": "home",
+      "tid": "239"
+    },
+    {
+      "name": "手工",
+      "code": "handmake",
+      "tid": "161"
+    },
+    {
+      "name": "绘画",
+      "code": "painting",
+      "tid": "162"
+    },
+    {
+      "name": "日常",
+      "code": "daily",
+      "tid": "21"
+    }
+  ],
+  "美食": [
+    {
+      "name": "美食",
+      "code": "food",
+      "tid": "211"
+    },
+    {
+      "name": "美食制作",
+      "code": "make",
+      "tid": "76"
+    },
+    {
+      "name": "美食侦探",
+      "code": "detective",
+      "tid": "212"
+    },
+    {
+      "name": "美食测评",
+      "code": "measurement",
+      "tid": "213"
+    },
+    {
+      "name": "田园美食",
+      "code": "rural",
+      "tid": "214"
+    },
+    {
+      "name": "美食记录",
+      "code": "record",
+      "tid": "215"
+    }
+  ],
+  "动物圈": [
+    {
+      "name": "动物圈",
+      "code": "animal",
+      "tid": "217"
+    },
+    {
+      "name": "喵星人",
+      "code": "cat",
+      "tid": "218"
+    },
+    {
+      "name": "汪星人",
+      "code": "dog",
+      "tid": "219"
+    },
+    {
+      "name": "小宠异宠",
+      "code": "reptiles",
+      "tid": "222"
+    },
+    {
+      "name": "野生动物",
+      "code": "wild_animal",
+      "tid": "221"
+    },
+    {
+      "name": "动物二创",
+      "code": "second_edition",
+      "tid": "220"
+    },
+    {
+      "name": "动物综合",
+      "code": "animal_composite",
+      "tid": "75"
+    }
+  ],
+  "鬼畜": [
+    {
+      "name": "鬼畜",
+      "code": "kichiku",
+      "tid": "119"
+    },
+    {
+      "name": "鬼畜调教",
+      "code": "guide",
+      "tid": "22"
+    },
+    {
+      "name": "音MAD",
+      "code": "mad",
+      "tid": "26"
+    },
+    {
+      "name": "人力VOCALOID",
+      "code": "manual_vocaloid",
+      "tid": "126"
+    },
+    {
+      "name": "鬼畜剧场",
+      "code": "theatre",
+      "tid": "216"
+    },
+    {
+      "name": "教程演示",
+      "code": "course",
+      "tid": "127"
+    }
+  ],
+  "时尚": [
+    {
+      "name": "时尚",
+      "code": "fashion",
+      "tid": "155"
+    },
+    {
+      "name": "美妆护肤",
+      "code": "makeup",
+      "tid": "157"
+    },
+    {
+      "name": "仿妆cos",
+      "code": "cos",
+      "tid": "252"
+    },
+    {
+      "name": "穿搭",
+      "code": "clothing",
+      "tid": "158"
+    },
+    {
+      "name": "时尚潮流",
+      "code": "catwalk",
+      "tid": "159"
+    }
+  ],
+  "资讯": [
+    {
+      "name": "资讯",
+      "code": "information",
+      "tid": "202"
+    },
+    {
+      "name": "热点",
+      "code": "hotspot",
+      "tid": "203"
+    },
+    {
+      "name": "环球",
+      "code": "global",
+      "tid": "204"
+    },
+    {
+      "name": "社会",
+      "code": "social",
+      "tid": "205"
+    },
+    {
+      "name": "综合",
+      "code": "multiple",
+      "tid": "206"
+    }
+  ],
+  "广告": [],
+  "娱乐": [
+    {
+      "name": "娱乐",
+      "code": "ent",
+      "tid": "5"
+    },
+    {
+      "name": "娱乐杂谈",
+      "code": "talker",
+      "tid": "241"
+    },
+    {
+      "name": "CP安利",
+      "code": "cp_recommendation",
+      "tid": "262"
+    },
+    {
+      "name": "颜值安利",
+      "code": "beauty",
+      "tid": "263"
+    },
+    {
+      "name": "娱乐粉丝创作",
+      "code": "fans",
+      "tid": "242"
+    },
+    {
+      "name": "娱乐资讯",
+      "code": "entertainment_news",
+      "tid": "264"
+    },
+    {
+      "name": "明星综合",
+      "code": "celebrity",
+      "tid": "137"
+    },
+    {
+      "name": "综艺",
+      "code": "variety",
+      "tid": "71"
+    }
+  ],
+  "影视": [
+    {
+      "name": "影视",
+      "code": "cinephile",
+      "tid": "181"
+    },
+    {
+      "name": "影视杂谈",
+      "code": "cinecism",
+      "tid": "182"
+    },
+    {
+      "name": "影视剪辑",
+      "code": "montage",
+      "tid": "183"
+    },
+    {
+      "name": "影视整活",
+      "code": "mashup",
+      "tid": "260"
+    },
+    {
+      "name": "AI影像",
+      "code": "ai_imaging",
+      "tid": "259"
+    },
+    {
+      "name": "预告·资讯",
+      "code": "trailer_info",
+      "tid": "184"
+    },
+    {
+      "name": "小剧场",
+      "code": "shortplay",
+      "tid": "85"
+    },
+    {
+      "name": "短片",
+      "code": "shortfilm",
+      "tid": "256"
+    },
+    {
+      "name": "影视综合",
+      "code": "comprehensive",
+      "tid": "261"
+    }
+  ],
+  "纪录片": [
+    {
+      "name": "纪录片",
+      "code": "documentary",
+      "tid": "177"
+    },
+    {
+      "name": "人文·历史",
+      "code": "history",
+      "tid": "37"
+    },
+    {
+      "name": "科学·探索·自然",
+      "code": "science",
+      "tid": "178"
+    },
+    {
+      "name": "军事",
+      "code": "military",
+      "tid": "179"
+    },
+    {
+      "name": "社会·美食·旅行",
+      "code": "travel",
+      "tid": "180"
+    }
+  ],
+  "电影": [
+    {
+      "name": "电影",
+      "code": "movie",
+      "tid": "23"
+    },
+    {
+      "name": "华语电影",
+      "code": "chinese",
+      "tid": "147"
+    },
+    {
+      "name": "欧美电影",
+      "code": "west",
+      "tid": "145"
+    },
+    {
+      "name": "日本电影",
+      "code": "japan",
+      "tid": "146"
+    },
+    {
+      "name": "其他国家",
+      "code": "movie",
+      "tid": "83"
+    }
+  ],
+  "电视剧": [
+    {
+      "name": "电视剧",
+      "code": "tv",
+      "tid": "11"
+    },
+    {
+      "name": "国产剧",
+      "code": "mainland",
+      "tid": "185"
+    },
+    {
+      "name": "海外剧",
+      "code": "overseas",
+      "tid": "187"
+    }
+  ]
+}

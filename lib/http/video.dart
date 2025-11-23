@@ -135,7 +135,10 @@ class VideoHttp {
             i['ad_info'] == null &&
             (i['args'] != null &&
                 !GlobalData().blackMids.contains(i['args']['up_id']))) {
-          if (RecommendFilter.filterZone(i['args']?['tname'])) {
+          if (RecommendFilter.filterZone(
+            i['args']?['tname'],
+            tid: i['args']?['tid']?.toString(),
+          )) {
             continue;
           }
           RecVideoItemAppModel videoItem = RecVideoItemAppModel.fromJson(i);
@@ -168,7 +171,10 @@ class VideoHttp {
               i['stat']['like'],
               i['stat']['view'],
             )) {
-          if (RecommendFilter.filterZone(i['tname'])) {
+          if (RecommendFilter.filterZone(
+            i['tname'],
+            tid: i['tid']?.toString(),
+          )) {
             continue;
           }
           list.add(HotVideoItemModel.fromJson(i));
