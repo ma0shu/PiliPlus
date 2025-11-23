@@ -47,27 +47,41 @@ class RecommendFilter {
 
   static bool filterTitle(String title) {
     if (enableWhiteFilter || enableFilter) {
-       debugPrint('FilterTitle: "$title" | White: $enableWhiteFilter ("${whiteRcmdRegExp.pattern}") | Black: $enableFilter ("${rcmdRegExp.pattern}")');
+       debugPrint('FilterTitle: "$title" | White: $enableWhiteFilter ("${whiteRcmdRegExp.pattern}") | Black: $enableFilter ("${rcmdRegExp.pattern}") | PrefBlack: "${Pref.banWordForRecommend}"');
     }
 
-    if (enableWhiteFilter && whiteRcmdRegExp.hasMatch(title)) {
+    // 1. Whitelist Check (Strict Mode)
+    if (enableWhiteFilter) {
+      if (!whiteRcmdRegExp.hasMatch(title)) {
+        debugPrint('Whitelist MISMATCH title: $title');
+        return true; // Filtered because it didn't match whitelist
+      }
       debugPrint('Whitelist matched title: $title');
-      return false;
     }
+
+    // 2. Blacklist Check
     if (enableFilter && rcmdRegExp.hasMatch(title)) {
       debugPrint('Blacklist matched title: $title');
-      return true;
+      return true; // Filtered
     }
     return false;
   }
 
   static bool filterZone(String? tname) {
     if (tname == null) return false;
-    if (enableZoneFilter && zoneRegExp.hasMatch(tname)) {
-      if (enableZoneWhiteFilter && zoneWhiteRegExp.hasMatch(tname)) {
-        debugPrint('Whitelist matched zone: $tname');
-        return false;
+    debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
+    
+    // 1. Whitelist Check (Strict Mode)
+    if (enableZoneWhiteFilter) {
+      if (!zoneWhiteRegExp.hasMatch(tname)) {
+        debugPrint('Whitelist MISMATCH zone: $tname');
+        return true; // Filtered because it didn't match whitelist
       }
+      debugPrint('Whitelist matched zone: $tname');
+    }
+
+    // 2. Blacklist Check
+    if (enableZoneFilter && zoneRegExp.hasMatch(tname)) {
       debugPrint('Blacklist matched zone: $tname');
       return true;
     }
