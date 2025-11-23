@@ -38,14 +38,6 @@ import 'package:flutter/foundation.dart' show compute;
 
 /// view层根据 status 判断渲染逻辑
 class VideoHttp {
-  static RegExp zoneRegExp = RegExp(Pref.banWordForZone, caseSensitive: false);
-  static bool enableFilter = zoneRegExp.pattern.isNotEmpty;
-  static RegExp zoneWhiteRegExp = RegExp(
-    Pref.whiteWordForZone,
-    caseSensitive: false,
-  );
-  static bool enableZoneWhiteFilter = zoneWhiteRegExp.pattern.isNotEmpty;
-
   // 首页推荐视频
   static Future<LoadingState> rcmdVideoList({
     required int ps,
@@ -143,15 +135,8 @@ class VideoHttp {
             i['ad_info'] == null &&
             (i['args'] != null &&
                 !GlobalData().blackMids.contains(i['args']['up_id']))) {
-          if (enableFilter &&
-              i['args']?['tname'] != null &&
-              zoneRegExp.hasMatch(i['args']['tname'])) {
-            if (enableZoneWhiteFilter &&
-                zoneWhiteRegExp.hasMatch(i['args']['tname'])) {
-              // pass
-            } else {
-              continue;
-            }
+          if (RecommendFilter.filterZone(i['args']?['tname'])) {
+            continue;
           }
           RecVideoItemAppModel videoItem = RecVideoItemAppModel.fromJson(i);
           if (!RecommendFilter.filter(videoItem)) {
@@ -183,15 +168,8 @@ class VideoHttp {
               i['stat']['like'],
               i['stat']['view'],
             )) {
-          if (enableFilter &&
-              i['tname'] != null &&
-              zoneRegExp.hasMatch(i['tname'])) {
-            if (enableZoneWhiteFilter &&
-                zoneWhiteRegExp.hasMatch(i['tname'])) {
-              // pass
-            } else {
-              continue;
-            }
+          if (RecommendFilter.filterZone(i['tname'])) {
+            continue;
           }
           list.add(HotVideoItemModel.fromJson(i));
         }

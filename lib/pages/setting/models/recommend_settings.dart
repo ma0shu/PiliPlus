@@ -83,8 +83,8 @@ List<SettingsModel> get recommendSettings => [
     title: 'App推荐/热门/排行榜: 视频分区关键词过滤',
     key: SettingBoxKey.banWordForZone,
     onChanged: (value) {
-      VideoHttp.zoneRegExp = value;
-      VideoHttp.enableFilter = value.pattern.isNotEmpty;
+      RecommendFilter.zoneRegExp = value;
+      RecommendFilter.enableZoneFilter = value.pattern.isNotEmpty;
     },
   ),
   getBanwordModel(
@@ -92,8 +92,8 @@ List<SettingsModel> get recommendSettings => [
     title: 'App推荐/热门/排行榜: 视频分区关键词白名单',
     key: SettingBoxKey.whiteWordForZone,
     onChanged: (value) {
-      VideoHttp.zoneWhiteRegExp = value;
-      VideoHttp.enableZoneWhiteFilter = value.pattern.isNotEmpty;
+      RecommendFilter.zoneWhiteRegExp = value;
+      RecommendFilter.enableZoneWhiteFilter = value.pattern.isNotEmpty;
     },
   ),
   getVideoFilterSelectModel(
