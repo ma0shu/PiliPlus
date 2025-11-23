@@ -59,7 +59,7 @@ class RecommendFilter {
     if (tid != null && whitePartitionIds.contains(tid)) return true;
 
     // 4. Zone V2 Names
-    if (tname != null && whitePartitionV2Names.contains(tname)) return true;
+    if (tname != null && whitePartitionV2Names.any((name) => name.isNotEmpty && tname.contains(name))) return true;
 
     return false;
   }
@@ -81,10 +81,10 @@ class RecommendFilter {
      
      if (whitelistActive) {
        if (!isWhitelisted(title, tname, tid)) {
-         // debugPrint('Whitelist MISMATCH: "$title" | Zone: $tname');
+         debugPrint('Whitelist MISMATCH: "$title" | Zone: $tname');
          return true; // Strict mode: not whitelisted -> filter
        }
-       // debugPrint('Whitelist MATCH: "$title" | Zone: $tname');
+        debugPrint('Whitelist MATCH: "$title" | Zone: $tname');
      }
 
      if (isBlacklisted(title, tname)) {
