@@ -254,6 +254,12 @@ abstract class Pref {
   static String get banWordForZone =>
       _setting.get(SettingBoxKey.banWordForZone, defaultValue: '');
 
+  static String get whiteWordForRecommend =>
+      _setting.get(SettingBoxKey.whiteWordForRecommend, defaultValue: '');
+
+  static String get whiteWordForZone =>
+      _setting.get(SettingBoxKey.whiteWordForZone, defaultValue: '');
+
   static bool get appRcmd =>
       _setting.get(SettingBoxKey.appRcmd, defaultValue: true);
 

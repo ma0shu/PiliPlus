@@ -71,11 +71,29 @@ List<SettingsModel> get recommendSettings => [
   ),
   getBanwordModel(
     context: Get.context!,
+    title: '标题关键词白名单',
+    key: SettingBoxKey.whiteWordForRecommend,
+    onChanged: (value) {
+      RecommendFilter.whiteRcmdRegExp = value;
+      RecommendFilter.enableWhiteFilter = value.pattern.isNotEmpty;
+    },
+  ),
+  getBanwordModel(
+    context: Get.context!,
     title: 'App推荐/热门/排行榜: 视频分区关键词过滤',
     key: SettingBoxKey.banWordForZone,
     onChanged: (value) {
       VideoHttp.zoneRegExp = value;
       VideoHttp.enableFilter = value.pattern.isNotEmpty;
+    },
+  ),
+  getBanwordModel(
+    context: Get.context!,
+    title: 'App推荐/热门/排行榜: 视频分区关键词白名单',
+    key: SettingBoxKey.whiteWordForZone,
+    onChanged: (value) {
+      VideoHttp.zoneWhiteRegExp = value;
+      VideoHttp.enableZoneWhiteFilter = value.pattern.isNotEmpty;
     },
   ),
   getVideoFilterSelectModel(

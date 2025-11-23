@@ -53,6 +53,8 @@ abstract class SettingBoxKey {
       exemptFilterForFollowed = 'exemptFilterForFollowed',
       banWordForRecommend = 'banWordForRecommend',
       applyFilterToRelatedVideos = 'applyFilterToRelatedVideos',
+      whiteWordForRecommend = 'whiteWordForRecommend',
+      whiteWordForZone = 'whiteWordForZone',
       autoUpdate = 'autoUpdate',
       autoClearCache = 'autoClearCache',
       maxCacheSize = 'maxCacheSize',
