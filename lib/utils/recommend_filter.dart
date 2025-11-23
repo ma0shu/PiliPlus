@@ -71,7 +71,7 @@ class RecommendFilter {
 
   static bool filterZone(String? tname, {String? tid}) {
     if (tname == null) return false;
-    // debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
+    debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
     
     // 1. Whitelist Check (Strict Mode)
     // Check regex OR partition ID list
@@ -88,15 +88,15 @@ class RecommendFilter {
 
     if (whitelistActive) {
       if (!matchedWhitelist) {
-        // debugPrint('Whitelist MISMATCH zone: $tname (tid: $tid)');
+        debugPrint('Whitelist MISMATCH zone: $tname (tid: $tid)');
         return true; // Filtered because it didn't match whitelist
       }
-      // debugPrint('Whitelist matched zone: $tname (tid: $tid)');
+      debugPrint('Whitelist matched zone: $tname (tid: $tid)');
     }
 
     // 2. Blacklist Check
     if (enableZoneFilter && zoneRegExp.hasMatch(tname)) {
-      // debugPrint('Blacklist matched zone: $tname');
+      debugPrint('Blacklist matched zone: $tname');
       return true;
     }
     return false;
