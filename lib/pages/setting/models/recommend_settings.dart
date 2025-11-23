@@ -112,6 +112,25 @@ List<SettingsModel> get recommendSettings => [
       }
     },
   ),
+  SettingsModel(
+    settingsType: SettingsType.normal,
+    title: 'App推荐/热门/排行榜: 视频分区白名单 V2 (选择)',
+    subtitle: '点击选择允许的分区 (V2)',
+    leading: const Icon(Icons.checklist_rtl_outlined),
+    onTap: (setState) async {
+      var result = await showDialog<List<String>>(
+        context: Get.context!,
+        builder: (context) => const PartitionSelectDialog(
+          jsonPath: 'assets/json/video_zone_v2.json',
+          storageKey: SettingBoxKey.whitePartitionV2Names,
+          saveAsNames: true,
+        ),
+      );
+      if (result != null) {
+        RecommendFilter.whitePartitionV2Names = result.toSet();
+      }
+    },
+  ),
   getVideoFilterSelectModel(
     context: Get.context!,
     title: '视频时长',

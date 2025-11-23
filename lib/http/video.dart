@@ -135,16 +135,20 @@ class VideoHttp {
             i['ad_info'] == null &&
             (i['args'] != null &&
                 !GlobalData().blackMids.contains(i['args']['up_id']))) {
-          if (RecommendFilter.filterZone(
+          if (RecommendFilter.shouldFilter(
+            i['title'],
             i['args']?['tname'],
-            tid: i['args']?['tid']?.toString(),
+            i['args']?['tid']?.toString(),
           )) {
             continue;
           }
           RecVideoItemAppModel videoItem = RecVideoItemAppModel.fromJson(i);
-          if (!RecommendFilter.filter(videoItem)) {
-            list.add(videoItem);
+          // filterAll checks duration and like ratio, but title/zone are already checked
+          if (RecommendFilter.filterLikeRatio(videoItem.stat.like, videoItem.stat.view) ||
+              (videoItem.duration > 0 && videoItem.duration < RecommendFilter.minDurationForRcmd)) {
+             continue;
           }
+          list.add(videoItem);
         }
       }
       return Success(list);
@@ -166,14 +170,14 @@ class VideoHttp {
       List<HotVideoItemModel> list = <HotVideoItemModel>[];
       for (var i in res.data['data']['list']) {
         if (!GlobalData().blackMids.contains(i['owner']['mid']) &&
-            !RecommendFilter.filterTitle(i['title']) &&
             !RecommendFilter.filterLikeRatio(
               i['stat']['like'],
               i['stat']['view'],
             )) {
-          if (RecommendFilter.filterZone(
+          if (RecommendFilter.shouldFilter(
+            i['title'],
             i['tname'],
-            tid: i['tid']?.toString(),
+            i['tid']?.toString(),
           )) {
             continue;
           }

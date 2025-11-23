@@ -45,61 +45,64 @@ class RecommendFilter {
     return false;
   }
 
-  static bool filterTitle(String title) {
-    if (enableWhiteFilter || enableFilter) {
-       debugPrint('FilterTitle: "$title" | White: $enableWhiteFilter ("${whiteRcmdRegExp.pattern}") | Black: $enableFilter ("${rcmdRegExp.pattern}") | PrefBlack: "${Pref.banWordForRecommend}"');
-    }
+  static Set<String> whitePartitionIds = Pref.whitePartitionIds.toSet();
+  static Set<String> whitePartitionV2Names = Pref.whitePartitionV2Names.toSet();
 
-    // 1. Whitelist Check (Strict Mode)
-    if (enableWhiteFilter) {
-      if (!whiteRcmdRegExp.hasMatch(title)) {
-        debugPrint('Whitelist MISMATCH title: $title');
-        return true; // Filtered because it didn't match whitelist
-      }
-      debugPrint('Whitelist matched title: $title');
-    }
+  static bool isWhitelisted(String title, String? tname, String? tid) {
+    // 1. Title Regex
+    if (enableWhiteFilter && whiteRcmdRegExp.hasMatch(title)) return true;
+    
+    // 2. Zone Regex
+    if (tname != null && enableZoneWhiteFilter && zoneWhiteRegExp.hasMatch(tname)) return true;
 
-    // 2. Blacklist Check
-    if (enableFilter && rcmdRegExp.hasMatch(title)) {
-      debugPrint('Blacklist matched title: $title');
-      return true; // Filtered
-    }
+    // 3. Zone V1 IDs
+    if (tid != null && whitePartitionIds.contains(tid)) return true;
+
+    // 4. Zone V2 Names
+    if (tname != null && whitePartitionV2Names.contains(tname)) return true;
+
     return false;
   }
 
-  static Set<String> whitePartitionIds = Pref.whitePartitionIds.toSet();
-
-  static bool filterZone(String? tname, {String? tid}) {
-    if (tname == null) return false;
-    debugPrint('FilterZone: "$tname" | White: $enableZoneWhiteFilter ("${zoneWhiteRegExp.pattern}") | Black: $enableZoneFilter ("${zoneRegExp.pattern}") | PrefBlack: "${Pref.banWordForZone}"');
-    
-    // 1. Whitelist Check (Strict Mode)
-    // Check regex OR partition ID list
-    bool matchedWhitelist = false;
-    if (enableZoneWhiteFilter && zoneWhiteRegExp.hasMatch(tname)) {
-      matchedWhitelist = true;
+  static bool isBlacklisted(String title, String? tname) {
+    if (enableFilter && rcmdRegExp.hasMatch(title)) {
+      debugPrint('Blacklist matched title: $title');
+      return true;
     }
-    if (!matchedWhitelist && tid != null && whitePartitionIds.contains(tid)) {
-      matchedWhitelist = true;
-    }
-
-    // If whitelist is active (either regex or IDs has content), we must match one of them
-    bool whitelistActive = enableZoneWhiteFilter || whitePartitionIds.isNotEmpty;
-
-    if (whitelistActive) {
-      if (!matchedWhitelist) {
-        debugPrint('Whitelist MISMATCH zone: $tname (tid: $tid)');
-        return true; // Filtered because it didn't match whitelist
-      }
-      debugPrint('Whitelist matched zone: $tname (tid: $tid)');
-    }
-
-    // 2. Blacklist Check
-    if (enableZoneFilter && zoneRegExp.hasMatch(tname)) {
+    if (tname != null && enableZoneFilter && zoneRegExp.hasMatch(tname)) {
       debugPrint('Blacklist matched zone: $tname');
       return true;
     }
     return false;
+  }
+
+  static bool shouldFilter(String title, String? tname, String? tid) {
+     bool whitelistActive = enableWhiteFilter || enableZoneWhiteFilter || whitePartitionIds.isNotEmpty || whitePartitionV2Names.isNotEmpty;
+     
+     if (whitelistActive) {
+       if (!isWhitelisted(title, tname, tid)) {
+         // debugPrint('Whitelist MISMATCH: "$title" | Zone: $tname');
+         return true; // Strict mode: not whitelisted -> filter
+       }
+       // debugPrint('Whitelist MATCH: "$title" | Zone: $tname');
+     }
+
+     if (isBlacklisted(title, tname)) {
+       return true;
+     }
+
+     return false;
+  }
+
+  static bool filterTitle(String title) {
+    // Legacy method, redirect to shouldFilter with null zone
+    return shouldFilter(title, null, null);
+  }
+
+  static bool filterZone(String? tname, {String? tid}) {
+    // Legacy method, redirect to shouldFilter with empty title (might be risky if title whitelist is active)
+    // Ideally we shouldn't use this anymore, but for safety:
+    return shouldFilter('', tname, tid);
   }
 
   static bool filterAll(BaseVideoItemModel videoItem) {

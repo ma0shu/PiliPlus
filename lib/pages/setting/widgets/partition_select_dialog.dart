@@ -8,7 +8,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PartitionSelectDialog extends StatefulWidget {
-  const PartitionSelectDialog({super.key});
+  final String jsonPath;
+  final String storageKey;
+  final bool saveAsNames;
+
+  const PartitionSelectDialog({
+    super.key,
+    this.jsonPath = 'assets/json/video_zone.json',
+    this.storageKey = SettingBoxKey.whitePartitionIds,
+    this.saveAsNames = false,
+  });
 
   @override
   State<PartitionSelectDialog> createState() => _PartitionSelectDialogState();
@@ -26,17 +35,18 @@ class _PartitionSelectDialogState extends State<PartitionSelectDialog> {
   }
 
   Future<void> _loadData() async {
-    final String jsonStr =
-        await rootBundle.loadString('assets/json/video_zone.json');
+    final String jsonStr = await rootBundle.loadString(widget.jsonPath);
     _videoZone = json.decode(jsonStr);
-    _selectedIds.addAll(Pref.whitePartitionIds);
+    _selectedIds.addAll(
+      List<String>.from(GStorage.setting.get(widget.storageKey) ?? []),
+    );
     setState(() {
       _loading = false;
     });
   }
 
   void _onSave() {
-    GStorage.setting.put(SettingBoxKey.whitePartitionIds, _selectedIds);
+    GStorage.setting.put(widget.storageKey, _selectedIds);
     Get.back(result: _selectedIds);
   }
 
@@ -80,7 +90,8 @@ class _PartitionSelectDialogState extends State<PartitionSelectDialog> {
     bool anySelected = false;
 
     for (var item in items) {
-      if (_selectedIds.contains(item['tid'])) {
+      final String id = widget.saveAsNames ? item['name'] : item['tid'];
+      if (_selectedIds.contains(id)) {
         anySelected = true;
       } else {
         allSelected = false;
@@ -97,30 +108,35 @@ class _PartitionSelectDialogState extends State<PartitionSelectDialog> {
             if (value == true) {
               // Select all
               for (var item in items) {
-                if (!_selectedIds.contains(item['tid'])) {
-                  _selectedIds.add(item['tid']);
+                final String id =
+                    widget.saveAsNames ? item['name'] : item['tid'];
+                if (!_selectedIds.contains(id)) {
+                  _selectedIds.add(id);
                 }
               }
             } else {
               // Deselect all
               for (var item in items) {
-                _selectedIds.remove(item['tid']);
+                final String id =
+                    widget.saveAsNames ? item['name'] : item['tid'];
+                _selectedIds.remove(id);
               }
             }
           });
         },
       ),
       children: items.map((item) {
-        final bool isSelected = _selectedIds.contains(item['tid']);
+        final String id = widget.saveAsNames ? item['name'] : item['tid'];
+        final bool isSelected = _selectedIds.contains(id);
         return CheckboxListTile(
           title: Text(item['name']),
           value: isSelected,
           onChanged: (bool? value) {
             setState(() {
               if (value == true) {
-                _selectedIds.add(item['tid']);
+                _selectedIds.add(id);
               } else {
-                _selectedIds.remove(item['tid']);
+                _selectedIds.remove(id);
               }
             });
           },

@@ -57,6 +57,7 @@ abstract class SettingBoxKey {
       whiteWordForRecommend = 'whiteWordForRecommend',
       whiteWordForZone = 'whiteWordForZone',
       whitePartitionIds = 'whitePartitionIds',
+      whitePartitionV2Names = 'whitePartitionV2Names',
       autoUpdate = 'autoUpdate',
       autoClearCache = 'autoClearCache',
       maxCacheSize = 'maxCacheSize',

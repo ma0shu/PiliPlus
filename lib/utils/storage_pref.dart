@@ -263,6 +263,9 @@ abstract class Pref {
   static List<String> get whitePartitionIds =>
       List<String>.from(_setting.get(SettingBoxKey.whitePartitionIds) ?? []);
 
+  static List<String> get whitePartitionV2Names =>
+      List<String>.from(_setting.get(SettingBoxKey.whitePartitionV2Names) ?? []);
+
   static bool get appRcmd =>
       _setting.get(SettingBoxKey.appRcmd, defaultValue: true);
 
