@@ -46,6 +46,10 @@ class RecommendFilter {
   }
 
   static bool filterTitle(String title) {
+    if (enableWhiteFilter || enableFilter) {
+       debugPrint('FilterTitle: "$title" | White: $enableWhiteFilter ("${whiteRcmdRegExp.pattern}") | Black: $enableFilter ("${rcmdRegExp.pattern}")');
+    }
+
     if (enableWhiteFilter && whiteRcmdRegExp.hasMatch(title)) {
       debugPrint('Whitelist matched title: $title');
       return false;
