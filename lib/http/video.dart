@@ -45,8 +45,8 @@ import 'package:protobuf/protobuf.dart';
 
 /// view层根据 status 判断渲染逻辑
 abstract final class VideoHttp {
-  static const int _minRecommendCount = 10;
-  static const int _maxRecommendRequests = 6;
+  static const int _minRecommendCount = 15;
+  static const int _maxRecommendRequests = 10;
   static RegExp zoneRegExp = RegExp(Pref.banWordForZone, caseSensitive: false);
   static bool enableFilter = zoneRegExp.pattern.isNotEmpty;
 
