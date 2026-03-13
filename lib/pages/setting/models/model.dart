@@ -153,6 +153,7 @@ SettingsModel getBanWordModel({
   required String title,
   required String key,
   required ValueChanged<RegExp> onChanged,
+  String description = '使用|隔开，如：尝试|测试',
 }) {
   String banWord = GStorage.setting.get(key, defaultValue: '');
   return NormalModel(
@@ -170,7 +171,7 @@ SettingsModel getBanWordModel({
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('使用|隔开，如：尝试|测试'),
+              Text(description),
               TextFormField(
                 autofocus: true,
                 initialValue: editValue,

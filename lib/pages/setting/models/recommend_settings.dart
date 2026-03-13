@@ -64,8 +64,9 @@ List<SettingsModel> get recommendSettings => [
     },
   ),
   getBanWordModel(
-    title: 'App推荐/热门/排行榜: 视频分区关键词过滤',
+    title: 'App推荐/热门/排行榜: 视频分区白名单',
     key: SettingBoxKey.banWordForZone,
+    description: '使用|隔开，仅保留命中的分区，如：音乐|舞蹈。推荐会额外请求，尽量补足到10条。',
     onChanged: (value) {
       VideoHttp.zoneRegExp = value;
       VideoHttp.enableFilter = value.pattern.isNotEmpty;

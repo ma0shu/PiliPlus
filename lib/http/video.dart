@@ -45,11 +45,36 @@ import 'package:protobuf/protobuf.dart';
 
 /// view层根据 status 判断渲染逻辑
 abstract final class VideoHttp {
+  static const int _minRecommendCount = 10;
+  static const int _maxRecommendRequests = 6;
   static RegExp zoneRegExp = RegExp(Pref.banWordForZone, caseSensitive: false);
   static bool enableFilter = zoneRegExp.pattern.isNotEmpty;
 
+  static bool _matchZone(String? tname) {
+    if (!enableFilter) {
+      return true;
+    }
+    return tname?.isNotEmpty == true && zoneRegExp.hasMatch(tname!);
+  }
+
+  static String _recommendKey(BaseRecVideoItemModel item) {
+    if (item.bvid case final String bvid when bvid.isNotEmpty) {
+      return 'bvid:$bvid';
+    }
+    if (item.aid case final int aid) {
+      return 'aid:$aid';
+    }
+    if (item.param case final int param) {
+      return 'param:$param';
+    }
+    if (item.uri case final String uri when uri.isNotEmpty) {
+      return 'uri:$uri';
+    }
+    return '${item.goto}:${item.title}:${item.owner.mid ?? 0}';
+  }
+
   // 首页推荐视频
-  static Future<LoadingState<List<RecVideoItemModel>>> rcmdVideoList({
+  static Future<LoadingState<RcmdPageResult<RecVideoItemModel>>> rcmdVideoList({
     required int ps,
     required int freshIdx,
   }) async {
@@ -78,90 +103,103 @@ abstract final class VideoHttp {
           }
         }
       }
-      return Success(list);
+      return Success(
+        RcmdPageResult(items: list, nextFreshIdx: freshIdx + 1),
+      );
     } else {
       return Error(res.data['message']);
     }
   }
 
   // 添加额外的loginState变量模拟未登录状态
-  static Future<LoadingState<List<RecVideoItemAppModel>>> rcmdVideoListApp({
+  static Future<LoadingState<RcmdPageResult<RecVideoItemAppModel>>>
+  rcmdVideoListApp({
     required int freshIdx,
   }) async {
-    final params = {
-      'build': 2001100,
-      'c_locale': 'zh_CN',
-      'channel': 'master',
-      'column': 4,
-      'device': 'pad',
-      'device_name': 'android',
-      'device_type': 0,
-      'disable_rcmd': 0,
-      'flush': 5,
-      'fnval': 976,
-      'fnver': 0,
-      'force_host': 2, //使用https
-      'fourk': 1,
-      'guidance': 0,
-      'https_url_req': 0,
-      'idx': freshIdx,
-      'mobi_app': 'android_hd',
-      'network': 'wifi',
-      'platform': 'android',
-      'player_net': 1,
-      'pull': freshIdx == 0 ? 'true' : 'false',
-      'qn': 32,
-      'recsys_mode': 0,
-      's_locale': 'zh_CN',
-      'splash_id': '',
-      'statistics': Constants.statistics,
-      'voice_balance': 0,
-    };
-    final res = await Request().get(
-      Api.recommendListApp,
-      queryParameters: params,
-      options: Options(
-        headers: {
-          'buvid': LoginHttp.buvid,
-          'fp_local':
-              '1111111111111111111111111111111111111111111111111111111111111111',
-          'fp_remote':
-              '1111111111111111111111111111111111111111111111111111111111111111',
-          'session_id': '11111111',
-          'env': 'prod',
-          'app-key': 'android_hd',
-          'User-Agent': Constants.userAgent,
-          'x-bili-trace-id': Constants.traceId,
-          'x-bili-aurora-eid': '',
-          'x-bili-aurora-zone': '',
-          'bili-http-engine': 'cronet',
-        },
-      ),
-    );
-    if (res.data['code'] == 0) {
-      List<RecVideoItemAppModel> list = <RecVideoItemAppModel>[];
+    final list = <RecVideoItemAppModel>[];
+    final seen = <String>{};
+    int nextFreshIdx = freshIdx;
+    int requestCount = 0;
+
+    while (requestCount < _maxRecommendRequests) {
+      final params = {
+        'build': 2001100,
+        'c_locale': 'zh_CN',
+        'channel': 'master',
+        'column': 4,
+        'device': 'pad',
+        'device_name': 'android',
+        'device_type': 0,
+        'disable_rcmd': 0,
+        'flush': 5,
+        'fnval': 976,
+        'fnver': 0,
+        'force_host': 2, //使用https
+        'fourk': 1,
+        'guidance': 0,
+        'https_url_req': 0,
+        'idx': nextFreshIdx,
+        'mobi_app': 'android_hd',
+        'network': 'wifi',
+        'platform': 'android',
+        'player_net': 1,
+        'pull': nextFreshIdx == 0 ? 'true' : 'false',
+        'qn': 32,
+        'recsys_mode': 0,
+        's_locale': 'zh_CN',
+        'splash_id': '',
+        'statistics': Constants.statistics,
+        'voice_balance': 0,
+      };
+      final res = await Request().get(
+        Api.recommendListApp,
+        queryParameters: params,
+        options: Options(
+          headers: {
+            'buvid': LoginHttp.buvid,
+            'fp_local':
+                '1111111111111111111111111111111111111111111111111111111111111111',
+            'fp_remote':
+                '1111111111111111111111111111111111111111111111111111111111111111',
+            'session_id': '11111111',
+            'env': 'prod',
+            'app-key': 'android_hd',
+            'User-Agent': Constants.userAgent,
+            'x-bili-trace-id': Constants.traceId,
+            'x-bili-aurora-eid': '',
+            'x-bili-aurora-zone': '',
+            'bili-http-engine': 'cronet',
+          },
+        ),
+      );
+      if (res.data['code'] != 0) {
+        return Error(res.data['message']);
+      }
+
       for (final i in res.data['data']['items']) {
-        // 屏蔽推广和拉黑用户
+        // 屏蔽推广、黑名单用户，以及未命中分区白名单的内容
         if (i['card_goto'] != 'ad_av' &&
             i['card_goto'] != 'ad_web_s' &&
             i['ad_info'] == null &&
             (i['args'] != null &&
-                !GlobalData().blackMids.contains(i['args']['up_id']))) {
-          if (enableFilter &&
-              i['args']?['tname'] != null &&
-              zoneRegExp.hasMatch(i['args']['tname'])) {
-            continue;
-          }
-          RecVideoItemAppModel videoItem = RecVideoItemAppModel.fromJson(i);
-          if (!RecommendFilter.filter(videoItem)) {
+                !GlobalData().blackMids.contains(i['args']['up_id'])) &&
+            _matchZone(i['args']?['tname'])) {
+          final videoItem = RecVideoItemAppModel.fromJson(i);
+          if (!RecommendFilter.filter(videoItem) &&
+              seen.add(_recommendKey(videoItem))) {
             list.add(videoItem);
           }
         }
       }
-      return Success(list);
-    } else {
-      return Error(res.data['message']);
+
+      nextFreshIdx++;
+      requestCount++;
+      if (!enableFilter || list.length >= _minRecommendCount) {
+        break;
+      }
     }
+
+    return Success(RcmdPageResult(items: list, nextFreshIdx: nextFreshIdx));
   }
 
   // 最热视频
@@ -182,9 +220,7 @@ abstract final class VideoHttp {
               i['stat']['like'],
               i['stat']['view'],
             )) {
-          if (enableFilter &&
-              i['tname'] != null &&
-              zoneRegExp.hasMatch(i['tname'])) {
+          if (!_matchZone(i['tname'])) {
             continue;
           }
           list.add(HotVideoItemModel.fromJson(i));
@@ -867,9 +903,7 @@ abstract final class VideoHttp {
           i['stat']['like'],
           i['stat']['view'],
         )) {
-      if (enableFilter &&
-          i['tname'] != null &&
-          zoneRegExp.hasMatch(i['tname'])) {
+      if (!_matchZone(i['tname'])) {
         return false;
       }
       return true;
@@ -1088,4 +1122,14 @@ abstract final class VideoHttp {
     }
     return Error(res.data['message']);
   }
+}
+
+class RcmdPageResult<T extends BaseRecVideoItemModel> {
+  const RcmdPageResult({
+    required this.items,
+    required this.nextFreshIdx,
+  });
+
+  final List<T> items;
+  final int nextFreshIdx;
 }
